@@ -1,30 +1,43 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { TransactionsService, UsersService } from '~/data/__generated__';
-import { getUserDataFromToken } from '~/utils/token';
+import {
+  GetTransactionsResponse,
+  status as TransactionStatus,
+  TransactionsService,
+} from '~/data/__generated__';
 
-export const usersQuery = {
-  queryKey: ['users'],
-  queryFn: UsersService.getUsers,
+export type AllowedStatuses = Exclude<TransactionStatus, 'REVERSED'>;
+
+type TransactionsQueryProps = {
+  status?: AllowedStatuses;
 };
-
-export const getTransactionsForUserQuery = (userId?: string) => ({
-  queryKey: ['transactions', userId],
-  queryFn: async () => TransactionsService.getTransactions({ userId }),
-  enabled: Boolean(userId),
+export const transactionsInfiniteQuery = ({
+  status,
+}: TransactionsQueryProps) => ({
+  queryKey: ['transactions', status],
+  queryFn: async ({ pageParam = 0 }) =>
+    TransactionsService.getTransactions({
+      status: status || undefined,
+      offset: pageParam,
+    }),
+  initialPageParam: 0,
+  getNextPageParam: (lastPage: GetTransactionsResponse) => {
+    const offset = lastPage?.meta?.offset || 0;
+    const limit = lastPage?.meta?.limit || 0;
+    const total = lastPage?.meta?.total || 0;
+    return offset + limit < total ? offset + limit : undefined;
+  },
 });
 
-export const dashboardLoader = (queryClient: QueryClient) => async () => {
-  console.log('🧡 dash loader');
+export const dashboardLoader =
+  (queryClient: QueryClient) =>
+  async ({ request }: { request: Request }) => {
+    const url = new URL(request.url);
+    const status = url.searchParams.get('status') as AllowedStatuses;
+    const query = transactionsInfiniteQuery({ status });
 
-  const userDataFromToken = getUserDataFromToken();
-  const transactionsQuery = getTransactionsForUserQuery(userDataFromToken.id);
-
-  const transactions =
-    queryClient.getQueryData(transactionsQuery.queryKey) ??
-    (await queryClient.fetchQuery(transactionsQuery));
-
-  console.log({ transactions });
-
-  return transactions;
-};
+    return (
+      queryClient.getQueryData(query.queryKey) ??
+      (await queryClient.fetchInfiniteQuery(query))
+    );
+  };

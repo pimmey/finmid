@@ -1,3 +1,5 @@
+import { UnauthorizedError } from '~/data/__generated__';
+
 export type FormValues = {
   email: string;
   password: string;
@@ -9,11 +11,6 @@ type FormField<T> = {
   label: string;
 };
 
-type ErrorBody = {
-  error: string;
-  message: string;
-};
-
 export type MutationErrorData = {
-  body: ErrorBody;
+  body: UnauthorizedError;
 };

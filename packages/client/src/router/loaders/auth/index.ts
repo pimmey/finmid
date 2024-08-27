@@ -1,4 +1,4 @@
-import { LoaderFunction, redirect } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 
 import { getValidToken } from '~/utils/token';
 
