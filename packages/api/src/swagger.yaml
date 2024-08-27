@@ -89,7 +89,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SME'
         '401':
-          description: Bad request. This is returned when the token doesn't get the correct authorization token
+          description: Bad request. This is returned when the auth doesn't get the correct authorization auth
           content:
             application/json:
               schema:

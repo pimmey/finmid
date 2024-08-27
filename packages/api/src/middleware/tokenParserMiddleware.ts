@@ -1,14 +1,14 @@
-import { Request, Response, NextFunction } from 'express';
-import { badRequest } from '@hapi/boom';
+import { Request, Response, NextFunction } from "express";
+import { badRequest } from "@hapi/boom";
 
 const jwtDecode = (token?: string | string[]): any | null => {
-  if (!token || typeof token !== 'string') {
+  if (!token || typeof token !== "string") {
     return null;
   }
 
   try {
-    const base64Payload = token.split('.')[1];
-    const payload = Buffer.from(base64Payload, 'base64');
+    const base64Payload = token.split(".")[1];
+    const payload = Buffer.from(base64Payload, "base64");
     return JSON.parse(payload.toString());
   } catch (error) {
     return null;
@@ -28,30 +28,30 @@ type ParsedToken = {
 };
 
 /**
- * Extracts the token from the `authorization` header, parses and returns it.
+ * Extracts the auth from the `authorization` header, parses and returns it.
  *
  * Throws `badRequest()` from `@hapi/boom`:
  * - when the headers are not found
- * - when the token is not able to be parsed by `jwtDecode()`
+ * - when the auth is not able to be parsed by `jwtDecode()`
  *
  * @throws badRequest
  * @param req
- * @returns {ParsedToken} parsed token
+ * @returns {ParsedToken} parsed auth
  */
 export const extractToken = (req: Request): ParsedToken => {
   const authHeader = req.headers.authorization;
-  let token: string = '';
+  let token: string = "";
 
-  if (authHeader && authHeader.startsWith('Bearer ')) {
+  if (authHeader && authHeader.startsWith("Bearer ")) {
     token = authHeader.substring(7, authHeader.length);
   } else {
-    throw badRequest('Expected authorization header');
+    throw badRequest("Expected authorization header");
   }
 
   const parsedToken = jwtDecode(token);
 
   if (!parsedToken || !parsedToken.userData.id || !parsedToken.userData.smeId) {
-    throw badRequest('Token could not be parsed');
+    throw badRequest("Token could not be parsed");
   }
 
   return parsedToken;
@@ -60,7 +60,7 @@ export const extractToken = (req: Request): ParsedToken => {
 export const tokenParserMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const parsedToken = extractToken(req);
