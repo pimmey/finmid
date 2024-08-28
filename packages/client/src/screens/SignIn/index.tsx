@@ -1,8 +1,8 @@
 import Spinner from '~/components/Spinner';
-import FormGroup from '~/screens/SignIn/components/FormGroup';
-import useLoginForm from '~/screens/SignIn/hooks/use-login-form';
 
+import FormGroup from './components/FormGroup';
 import { FIELDS } from './config';
+import useLoginForm from './hooks/use-login-form';
 
 export default function SignIn() {
   const { handleSubmit, onSubmit, register, errors, isPending } =

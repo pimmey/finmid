@@ -16,7 +16,7 @@ export default function ErrorPage() {
   }
 
   return (
-    <div id="error-page" className="p-4">
+    <div id="error-page" className="container mx-auto p-4">
       <h1 className="text-4xl">Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
       <pre className="bg-brand p-4">{errorMessage}</pre>

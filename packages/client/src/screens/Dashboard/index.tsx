@@ -5,8 +5,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Spinner from '~/components/Spinner';
 import { Transaction } from '~/data/__generated__';
 import { transactionsInfiniteQuery } from '~/router/loaders/dashboard';
-import Filters from '~/screens/Dashboard/components/Filters';
 
+import Filters from './components/Filters';
 import TransactionDetail from './components/TransactionDetail';
 import TransactionItem from './components/TransactionItem';
 import useStatus from './hooks/use-status';
