@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import queryClient from '~/data/client';
 import MainLayout from '~/layout/Main';
 import Dashboard from '~/screens/Dashboard';
+import ErrorPage from '~/screens/ErrorPage';
 import SignIn from '~/screens/SignIn';
 
 import { authLoader } from './loaders/auth';
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     path: '/',
     loader: authLoader,
     element: <MainLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,

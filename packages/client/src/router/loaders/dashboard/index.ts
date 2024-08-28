@@ -5,6 +5,8 @@ import {
   status as TransactionStatus,
   TransactionsService,
 } from '~/data/__generated__';
+import { FILTER_STATUSES } from '~/screens/Dashboard/components/Filters';
+import { getValidatedStatusParam } from '~/utils/validate-status-param';
 
 export type AllowedStatuses = Exclude<TransactionStatus, 'REVERSED'>;
 
@@ -21,10 +23,10 @@ export const transactionsInfiniteQuery = ({
       offset: pageParam,
     }),
   initialPageParam: 0,
-  getNextPageParam: (lastPage: GetTransactionsResponse) => {
-    const offset = lastPage?.meta?.offset || 0;
-    const limit = lastPage?.meta?.limit || 0;
-    const total = lastPage?.meta?.total || 0;
+  getNextPageParam: ({ meta }: GetTransactionsResponse) => {
+    const offset = meta?.offset || 0;
+    const limit = meta?.limit || 0;
+    const total = meta?.total || 0;
     return offset + limit < total ? offset + limit : undefined;
   },
 });
@@ -33,11 +35,17 @@ export const dashboardLoader =
   (queryClient: QueryClient) =>
   async ({ request }: { request: Request }) => {
     const url = new URL(request.url);
-    const status = url.searchParams.get('status') as AllowedStatuses;
+
+    const statusSearchParam = url.searchParams.get('status') as AllowedStatuses;
+    const status = getValidatedStatusParam(statusSearchParam);
     const query = transactionsInfiniteQuery({ status });
 
-    return (
-      queryClient.getQueryData(query.queryKey) ??
-      (await queryClient.fetchInfiniteQuery(query))
-    );
+    try {
+      return (
+        queryClient.getQueryData(query.queryKey) ??
+        (await queryClient.fetchInfiniteQuery(query))
+      );
+    } catch (error) {
+      return null;
+    }
   };

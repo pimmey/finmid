@@ -17,9 +17,9 @@ export default function ErrorPage() {
 
   return (
     <div id="error-page" className="p-4">
-      <h1>Oops!</h1>
+      <h1 className="text-4xl">Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
-      <pre className="bg-gray-200 p-4">{errorMessage}</pre>
+      <pre className="bg-brand p-4">{errorMessage}</pre>
       <p>
         <Link to="/" className="underline">
           Go back to homepage

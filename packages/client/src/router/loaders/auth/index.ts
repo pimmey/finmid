@@ -6,7 +6,7 @@ export async function authLoader() {
   const token = getValidToken();
 
   if (!token) {
-    return redirect('/sign-in');
+    throw redirect('/sign-in');
   }
 
   return null;
