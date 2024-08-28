@@ -27,9 +27,13 @@ export default function FormGroup({
         id={id}
         {...register(id)}
         className="rounded-3xl border border-ducky-weak px-4 py-3 leading-[27px] text-text-neutral shadow-input"
+        data-testid={id + '-input'}
       />
       {error ? (
-        <div className="self-start rounded bg-ducky-danger p-1 text-sm text-text-danger">
+        <div
+          className="self-start rounded bg-ducky-danger p-1 text-sm text-text-danger"
+          data-testid={`${id}-error-message`}
+        >
           {String(error)}
         </div>
       ) : null}

@@ -7,12 +7,11 @@ import { FIELDS } from './config';
 export default function SignIn() {
   const { handleSubmit, onSubmit, register, errors, isPending } =
     useLoginForm();
-
   return (
     <div className="flex min-h-screen items-center">
       <div className="container mx-auto px-4">
         <form
-          className="bg-brand flex flex-col gap-y-16 rounded-3xl p-8"
+          className="bg-brand flex flex-col gap-y-16 rounded-3xl p-8 md:mx-auto md:w-1/2"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="text-4xl">Welcome back!</div>
@@ -29,6 +28,7 @@ export default function SignIn() {
               type="submit"
               className="self-end rounded-3xl bg-black px-4 py-2 text-white"
               disabled={isPending}
+              data-testid="sign-in-button"
             >
               {isPending ? <Spinner /> : 'Sign in'}
             </button>
