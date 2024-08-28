@@ -31,6 +31,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-y-4">
+      <div className="text-2xl md:text-4xl">Transactions</div>
       <Filters
         showSpinner={isLoading || isPending}
         handleFilterChange={handleFilterChange}

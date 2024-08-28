@@ -12,6 +12,7 @@ export default function Nav() {
     queryFn: SmeService.getSmeData,
     queryKey: ['sme-data'],
     retry: false,
+    refetchOnWindowFocus: false,
   });
 
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function Nav() {
   return (
     <nav className="sticky top-2 z-50">
       <div className="container mx-auto mb-8 px-4">
-        <div className="bg-brand flex justify-between gap-x-4 rounded-full bg-opacity-75 px-8 py-4 backdrop-blur-lg">
+        <div className="bg-brand flex justify-between gap-x-4 rounded-3xl bg-opacity-75 px-8 py-4 backdrop-blur-lg">
           <div className="flex items-center justify-between gap-x-2">
             <img src="/logo.png" className="h-6 w-6" />
             <div className="flex items-center gap-x-2">

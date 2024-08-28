@@ -18,6 +18,7 @@ function TransactionDetail({
     queryFn: UsersService.getUsers,
     queryKey: ['users'],
     retry: false,
+    refetchOnWindowFocus: false,
   });
 
   const responsibleUser = useMemo(
@@ -26,7 +27,7 @@ function TransactionDetail({
   );
 
   return (
-    <div className="fixed bottom-0 left-0 flex h-3/4 w-full flex-col justify-between self-start rounded-3xl rounded-b-none border bg-white p-4 text-lg md:sticky md:top-36 md:h-auto md:w-5/12 md:rounded-b-3xl">
+    <div className="fixed bottom-0 left-0 flex h-3/4 w-full flex-col justify-between self-start rounded-3xl rounded-b-none border bg-white p-4 text-lg md:sticky md:top-16 md:h-auto md:w-5/12 md:rounded-b-3xl">
       <div className="flex flex-col gap-y-4">
         <div>
           <div className="text-sm text-gray-400">Timestamp</div>
@@ -46,7 +47,7 @@ function TransactionDetail({
       </div>
       <a
         onClick={handleOnCloseClick}
-        className="cursor-pointer pb-4 text-center underline md:hidden"
+        className="flex cursor-pointer self-center pb-4 underline md:self-end md:pb-0"
       >
         Close
       </a>
