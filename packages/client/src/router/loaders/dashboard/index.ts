@@ -5,7 +5,6 @@ import {
   status as TransactionStatus,
   TransactionsService,
 } from '~/data/__generated__';
-import { FILTER_STATUSES } from '~/screens/Dashboard/components/Filters';
 import { getValidatedStatusParam } from '~/utils/validate-status-param';
 
 export type AllowedStatuses = Exclude<TransactionStatus, 'REVERSED'>;

@@ -17,7 +17,7 @@ type FiltersProps = {
 };
 function Filters({ showSpinner, handleFilterChange, status }: FiltersProps) {
   return (
-    <div className="sticky top-24 flex items-center gap-x-2">
+    <div className="flex flex-col items-start justify-start gap-x-2 gap-y-2 md:sticky md:top-16 md:flex-row md:items-center">
       {FILTER_STATUSES.map(filterStatus => {
         const isSelected = filterStatus === status;
         return (

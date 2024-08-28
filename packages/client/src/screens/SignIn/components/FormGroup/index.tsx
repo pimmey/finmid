@@ -1,6 +1,6 @@
 import { FieldErrors, Path, UseFormRegister } from 'react-hook-form';
 
-import { FormValues } from '../../';
+import { FormValues } from '../../types';
 
 type FormGroupProps = {
   id: Path<FormValues>;
@@ -26,7 +26,7 @@ export default function FormGroup({
         type={type}
         id={id}
         {...register(id)}
-        className="rounded border border-ducky-weak px-4 py-3 leading-[27px] text-text-neutral shadow-input"
+        className="rounded-3xl border border-ducky-weak px-4 py-3 leading-[27px] text-text-neutral shadow-input"
       />
       {error ? (
         <div className="self-start rounded bg-ducky-danger p-1 text-sm text-text-danger">

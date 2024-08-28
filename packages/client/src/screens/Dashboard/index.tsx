@@ -16,7 +16,6 @@ export default function Dashboard() {
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>();
 
-  console.log('from component firing up');
   const { data, isLoading, isPending, fetchNextPage, hasNextPage, isError } =
     useInfiniteQuery(
       transactionsInfiniteQuery({
@@ -24,54 +23,57 @@ export default function Dashboard() {
       }),
     );
 
-  console.log({ isError });
-
   const transactions = data?.pages.flatMap(page => page.data);
 
-  const handleClick = useCallback((transaction: Transaction) => {
+  const handleOnTransactionClick = useCallback((transaction: Transaction) => {
     setSelectedTransaction(transaction);
   }, []);
 
   return (
-    <div className="flex justify-between">
-      <div className="flex w-1/2 flex-col gap-y-4">
-        <Filters
-          showSpinner={isLoading || isPending}
-          handleFilterChange={handleFilterChange}
-          status={status}
-        />
-        {isError ? (
-          <div>
-            Couldn't load transactions. Try refreshing the page or contact us
-            for support.
-          </div>
-        ) : null}
-        <InfiniteScroll
-          dataLength={transactions?.length || 0}
-          next={fetchNextPage}
-          hasMore={hasNextPage}
-          loader={
-            <div className="flex h-10 items-center justify-center gap-x-2">
-              <Spinner />
+    <div className="flex flex-col gap-y-4">
+      <Filters
+        showSpinner={isLoading || isPending}
+        handleFilterChange={handleFilterChange}
+        status={status}
+      />
+      <div className="flex justify-between">
+        <div className="w-full md:w-1/2">
+          {isError ? (
+            <div>
+              Couldn't load transactions. Try refreshing the page or contact us
+              for support.
             </div>
-          }
-          className="flex flex-col gap-y-2"
-        >
-          {transactions?.map(transaction =>
-            transaction ? (
-              <TransactionItem
-                key={transaction.id}
-                transaction={transaction}
-                handleClick={handleClick}
-                isSelected={selectedTransaction?.id === transaction.id}
-              />
-            ) : null,
-          )}
-        </InfiniteScroll>
+          ) : null}
+          <InfiniteScroll
+            dataLength={transactions?.length || 0}
+            next={fetchNextPage}
+            hasMore={hasNextPage}
+            loader={
+              <div className="flex h-10 items-center justify-center gap-x-2">
+                <Spinner />
+              </div>
+            }
+            className="flex flex-col gap-y-2"
+          >
+            {transactions?.map(transaction =>
+              transaction ? (
+                <TransactionItem
+                  key={transaction.id}
+                  transaction={transaction}
+                  handleClick={handleOnTransactionClick}
+                  isSelected={selectedTransaction?.id === transaction.id}
+                />
+              ) : null,
+            )}
+          </InfiniteScroll>
+        </div>
+        {selectedTransaction ? (
+          <TransactionDetail
+            transaction={selectedTransaction}
+            handleOnCloseClick={() => setSelectedTransaction(undefined)}
+          />
+        ) : null}
       </div>
-      {selectedTransaction ? (
-        <TransactionDetail transaction={selectedTransaction} />
-      ) : null}
     </div>
   );
 }

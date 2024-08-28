@@ -17,6 +17,10 @@ export function setToken(token: string): void {
   localStorage.setItem(TOKEN_LOCAL_STORAGE_KEY, token);
 }
 
+export function removeToken() {
+  localStorage.removeItem(TOKEN_LOCAL_STORAGE_KEY);
+}
+
 function isJWTExpired(token: string): boolean {
   const decoded = jwtDecode<JwtPayload>(token);
 
